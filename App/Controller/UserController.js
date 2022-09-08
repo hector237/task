@@ -3,13 +3,13 @@
 const { response,request } = require("express");
 
 getUser = (req, res = response) => {
-    res.send('Get Task')
+    res.send('Get User')
 }
-getTUser = (req = request, res = response) => {
+getUsers = (req = request, res = response) => {
     
     
     
-    res.send('Get Tasks')
+    res.send('Get USers')
 }
 createUser = (req = request, res = response) => {
     const data = req.body;
@@ -19,15 +19,15 @@ createUser = (req = request, res = response) => {
     })
 }
 updateUser = (req = request, res = response) => {
-    res.send('Update Task')
+    res.send('Update User')
 }
 deleteUser = (req = request, res = response) => {
-    res.send('Delete Task')
+    res.send('Delete User')
 }
 
 module.exports = {
     getUser,
-    getUser,
+    getUsers,
     updateUser,
     deleteUser,
     createUser
