@@ -8,7 +8,7 @@ router.get('/:id', getTask);
 router.get('/', getTasks);
 router.post('/', createTask);
 router.put('/:id', updateTask);
-router.delete('/:id3.', deleteTask);
+router.delete('/:id', deleteTask);
 
 router.get('/testdatabase', (req, res) => {
 
