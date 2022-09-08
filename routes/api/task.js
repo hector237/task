@@ -1,5 +1,6 @@
 const {Router} = require('express');
 const { getTask, getTasks, createTask, updateTask, deleteTask } = require('../../App/Controller/TaskController');
+const {  getUser, createUser, updateUser, deleteUser, getUsers } = require('../../App/Controller/UserController');
 const BD = require('../../config/database');
 
 const router = Router();
@@ -9,6 +10,8 @@ router.get('/', getTasks);
 router.post('/', createTask);
 router.put('/:id', updateTask);
 router.delete('/:id', deleteTask);
+
+
 
 router.get('/testdatabase', (req, res) => {
 
