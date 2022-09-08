@@ -24,11 +24,12 @@ class Server {
     }
 
     routes() {
+        this.app.use('/api/user', require('../routes/api/users'))
         this.app.use('/api/task', require('../routes/api/task'))
     }
     listen() {
         this.app.listen(this.port, () => {
-            console.log('Servidor corrienfoen puerto ', process.env.PORT);
+            console.log('Servidor corriendo en el puerto ', process.env.PORT);
         })
     }
 }
