@@ -9,22 +9,51 @@
  */
 require('dotenv').config();
 const mysql = require('mysql');
+const mongoose = require('mongoose');
 
 
-class BD {
 
- connection()  {
-    
-    
-  return   mysql.createConnection({
-  host     : process.env.DB_HOST,
-  user     : process.env.DB_USERNAME,
-  password : process.env.DB_PASSWORD,
-  database : process.env.DB_DATABASE
-});}
-constructor(){
-     this.connection();
+
+const connectionMysql = async () => {
+
+
+     try {
+          await mysql.createConnection({
+               host: process.env.DB_HOST,
+               user: process.env.DB_USERNAME,
+               password: process.env.DB_PASSWORD,
+               database: process.env.DB_DATABASE
+          });
+          console.log("Successful connection")
+     }
+
+     catch (error) {
+          console.log(error);
+          throw new Error('Error when connecting to database')
+     }
 }
+
+
+const connectionMongo = async () => {
+
+     try {
+          await mongoose.connect(process.env.DB_HOST, {
+               useNewUrlParser: true,
+               useUnifiedTopology: true,
+              
+          });
+          console.log("Connection succefull")
+     } catch (error) {
+          console.log(error);
+          throw new Error('Error when connecting to database')
+     }
 }
- 
-module.exports = BD;
+
+
+
+
+
+module.exports = {
+     connectionMysql,
+     connectionMongo
+};

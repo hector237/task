@@ -1,28 +1,78 @@
 //Importations
+const { response, request } = require("express");
 
-const { response,request } = require("express");
+//Models
+const User = require('../Models/User');
 
-getUser = (req, res = response) => {
+//Utilities
+const bcryptjs = require('bcryptjs');
+
+
+getUser = async (req, res = response) => {
     res.send('Get User')
 }
-getUsers = (req = request, res = response) => {
+getUsers = async (req = request, res = response) => {
+    const{limit = 5, skip = 0} = req.query;
     
-    
-    
-    res.send('Get USers')
-}
-createUser = (req = request, res = response) => {
-    const data = req.body;
-    
+    const [total, user] = await Promise.all([
+       User.countDocuments({isActive: true}),
+       User.find({isActive: true})
+        .skip(Number(skip))
+        .limit(Number(limit)),
+
+    ])
     res.json({
-        data
+        Pagination :{
+            total,
+            limit,
+            skip
+        },
+        user
+
     })
 }
-updateUser = (req = request, res = response) => {
-    res.send('Update User')
+createUser =  async(req = request, res = response) => {
+    const { name, email, password, role } = req.body;
+    const user = new User({ name, email, password, role });
+
+    //encrypt the pass
+    const salt = bcryptjs.genSaltSync();
+    user.password = bcryptjs.hashSync(password, salt);
+
+    //save the user   
+    await user.save();
+
+    res.json({
+        user
+    })
 }
-deleteUser = (req = request, res = response) => {
-    res.send('Delete User')
+updateUser = async (req = request, res = response) => {
+    const {id} = req.params;
+    const { _id, email, password, role, googleSingIn, ...update } = req.body;
+
+    console.log(update);
+
+    //encrypt the pass
+
+    if (password) {
+        const salt = bcryptjs.genSaltSync();
+        update.password = bcryptjs.hashSync(password, salt);
+    }
+    
+    const user = await User.findByIdAndUpdate(id,update,{returnDocument:'after'})
+    console.log(user);
+    res.json({
+        user
+    });
+}
+deleteUser = async (req = request, res = response) => {
+    const {id} = req.params;
+
+    const user = await User.findByIdAndUpdate(id,{isActive : false},{returnDocument:'after'})
+   
+    res.json({
+        user
+    });
 }
 
 module.exports = {
