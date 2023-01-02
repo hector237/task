@@ -2,11 +2,10 @@ const {Router} = require('express');
 
 //Validations
 const { check } = require('express-validator');
-const { validate } = require('../../App/Middlewares/validate-user');
+const {} = require('../../App/Middlewares')
+const { existRole, hasRole } = require('../../App/Middlewares/validate-role');
+const { existEmail, validate, existUserID } = require('../../App/Middlewares/validate-user');
 const { validateJWT } = require('../../App/Middlewares/generate-jwt');
-const { existRole, isAdmin, hasRole } = require('../../App/Middlewares/validate-role');
-const { existEmail } = require('../../App/Middlewares/validate-email');
-const { existID } = require('../../App/Middlewares/validate-id');
 
 //Controllers
 const {  getUser, createUser, updateUser, deleteUser, getUsers } = require('../../App/Controller/UserController');
@@ -23,8 +22,9 @@ router.post('/',[
     validate
 ], createUser);
 router.put('/:id',[
+    validateJWT,
     check('id', "the ID isn't valid").isMongoId(),
-    check('id').custom(existID),
+    check('id').custom(existUserID),
     validate
 ], updateUser);
 router.delete('/:id',[
@@ -32,7 +32,7 @@ router.delete('/:id',[
     //isAdmin,
     hasRole('ADMIN_ROLE', "MODERATOR_ROLE"),
     check('id', "the ID isn't valid").isMongoId(),
-    check('id').custom(existID),
+    check('id').custom(existUserID),
     validate
 ], deleteUser);
 

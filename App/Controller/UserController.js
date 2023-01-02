@@ -50,10 +50,7 @@ updateUser = async (req = request, res = response) => {
     const {id} = req.params;
     const { _id, email, password, role, googleSingIn, ...update } = req.body;
 
-    console.log(update);
-
     //encrypt the pass
-
     if (password) {
         const salt = bcryptjs.genSaltSync();
         update.password = bcryptjs.hashSync(password, salt);

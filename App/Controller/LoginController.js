@@ -13,38 +13,35 @@ login = async (req, res = response) => {
         //verifiying if the email exist
         if (!user) {
             return res.json({
-                msg: " email dosen't exist in the database"
-            })
-
+                msg: " email dosen't exist in the database "
+            });
         }
         //verifiying if the user has a true status
         if (!user.isActive) {
             return res.json({
-                msg: " user status dosen't exist in the database"
+                msg: " user status dosen't exist in the database "
             });
         }
         //verifiying if the password is equal
         const validPassword = bcryptjs.compareSync(password, user.password);
         if (!validPassword) {
             return res.json({
-                msg: " the provided user password dosen't exist in the database"
-            })
+                msg: " the provided user password dosen't exist in the database "
+            });
         }
         //generates the JWT
         jwt = await generateJWT(user.id);
         return res.json({
-            msg: " Login",
+            msg: " Login ",
             user,
             jwt
-        })
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'you have given incorrect information'
-        })
+            msg: ' you have given incorrect information '
+        });
     }
-
-
 }
 
 module.exports = {

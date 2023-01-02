@@ -36,7 +36,6 @@ const hasRole = (...roles) => {
             return res.status(500).json({
                 error: 'Validate role first'
             });
-            
         }
         if ( !roles.includes(req.Logued_user.role)) {
             return res.status(401).json({

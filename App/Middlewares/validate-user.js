@@ -10,6 +10,39 @@ const validate = (req, res, next) => {
 
 }
 
+/**
+ * 
+ * @param {*} email 
+ * Confirm if exists the email in DB
+ */
+const existEmail = async (email = "") => {
+
+    const exist_Email = await User.findOne({email});
+
+    if (exist_Email) {
+        throw new Error (`The role ${email} exist in DATABASE`)
+    }
+
+}
+
+/**
+ * 
+ * @param {*} id 
+ * Confirm if exist the user ID
+ */
+
+const existUserID = async (id = "") => {
+
+    const exist_ID = await User.findOne({id});
+
+    if (!exist_ID) {
+        throw new Error (`The ID ${id} doesn't exist in DATABASE`)
+    }
+
+}
+
 module.exports ={
-    validate
+    validate,
+    existEmail,
+    existUserID,
 }
